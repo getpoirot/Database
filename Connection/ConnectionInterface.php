@@ -3,56 +3,63 @@ namespace Poirot\Database\Connection;
 
 use Poirot\Collection\Entity;
 
+/**
+ * Interface ConnectionInterface
+ * @package Poirot\Database\Connection
+ */
 interface ConnectionInterface
 {
     /**
-     * Initialize Resource Connection
-     * - before get connect, initialize the engine
-     *   with options
+     * Construct
      *
-     * @return $this
+     * @param Entity $config Connection Configuration
      */
-    public function initialize();
+    function __construct(Entity $config);
 
     /**
-     * Connect
-     * - set options if conveyor passed as argument
+     * Set Configuration Options
      *
-     * @param null|Entity\ConveyorInputInterface $options Options
+     * @param Entity $config Config
      *
-     * @throws \Exception
      * @return $this
      */
-    public function connect(Entity\ConveyorInputInterface $options = null);
+    function setConfig(Entity $config);
+
+    /**
+     * Get Configuration Options
+     *
+     * @return Entity
+     */
+    function getConfig();
+
+    /**
+     * Get Options Initialized Connection Resource
+     * - Initialize resource with Options
+     * - connect
+     *
+     * @param null|Entity $config Connection Configs
+     *
+     * @return mixed
+     */
+    function getConnection(Entity $config = null);
 
     /**
      * Close Connection
      *
-     * @return $this
      */
-    public function close();
+    function close();
 
     /**
      * Is Connected
      *
      * @return boolean
      */
-    public function isConnected();
-
-    /**
-     * Get Options
-     * - set options if conveyor passed as argument
-     *
-     * @param null|Entity\ConveyorInputInterface $options Options
-     *
-     * @return Entity
-     */
-    public function option(Entity\ConveyorInputInterface $options = null);
+    function isConnected();
 
     /**
      * Get UnInitialized Resource Engine
      *
      * @return mixed
      */
-    public function getEngine();
+    function getEngine();
 }

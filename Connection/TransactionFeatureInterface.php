@@ -8,19 +8,19 @@ interface TransactionFeatureInterface
      *
      * @return $this
      */
-    public function transaction();
+    function transStart();
 
     /**
      * Transaction Commit
      *
      * @return $this
      */
-    public function transCommit();
+    function transCommit();
 
     /**
      * Rollback Transaction
      *
      * @return $this
      */
-    public function transRollback();
+    function transRollback();
 }
