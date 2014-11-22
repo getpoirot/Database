@@ -6,6 +6,40 @@ use Poirot\Database\Driver\ResultInterface;
 class Result implements ResultInterface
 {
     /**
+     * @var \mysqli_result
+     */
+    protected $resultOrigin;
+
+    /**
+     * Set Query Result Origin
+     *
+     * @param \mysqli_result $resultOrigin Query Result Connection Origin
+     *
+     * @throws \Exception
+     * @return $this
+     */
+    public function setOrigin($resultOrigin)
+    {
+        if (! $resultOrigin instanceof \mysqli_result)
+            throw new \Exception('Result Only Support "mysqli_result" as origin.');
+
+        $this->resultOrigin = $resultOrigin;
+
+        return $this;
+    }
+
+    /**
+     * Get Original Connection Query Result
+     * From Connection Origin Engine
+     *
+     * @return \mysqli_result
+     */
+    public function getOrigin()
+    {
+        return $this->resultOrigin;
+    }
+
+    /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the current element
      * @link http://php.net/manual/en/iterator.current.php

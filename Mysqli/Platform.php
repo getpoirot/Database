@@ -16,7 +16,10 @@ class Platform implements PlatformInterface
      */
     public function attainAbstractResult($result)
     {
-        return $result;
+        $return = new Result();
+        $return->setOrigin($result);
+
+        return $return;
     }
 
     /**
