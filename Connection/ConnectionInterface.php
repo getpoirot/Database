@@ -54,5 +54,5 @@ interface ConnectionInterface
      *
      * @return mixed
      */
-    function getEngine();
+    function getOrigin();
 }

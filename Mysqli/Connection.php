@@ -27,7 +27,7 @@ class Connection extends AbstractConnection
      */
     function getConnection(Entity $config = null)
     {
-        $this->conn = $this->getEngine();
+        $this->conn = $this->getOrigin();
 
         // localize
         $p = ($config) ?: $this->getConfig();
@@ -111,7 +111,7 @@ class Connection extends AbstractConnection
      *
      * @return mixed
      */
-    function getEngine()
+    function getOrigin()
     {
         if (!$this->mysqli instanceof \mysqli) {
             $this->mysqli = new \mysqli();

@@ -69,7 +69,7 @@ class Driver extends AbstractDriver
      */
     function setConnection(ConnectionInterface $connection)
     {
-        if (! $connection->getEngine() instanceof \mysqli)
+        if (! $connection->getOrigin() instanceof \mysqli)
             throw new \Exception('This driver only support "mysqli" connection engine.');
 
         $this->connection = $connection;
