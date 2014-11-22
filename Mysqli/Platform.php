@@ -1,10 +1,11 @@
 <?php
-namespace Poirot\Database\Platform;
+namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\ResultInterface;
+use Poirot\Database\Platform\PlatformInterface;
 
-interface PlatformInterface
+class Platform implements PlatformInterface
 {
     /**
      * Attain To Abstract Result From Specific Engine Result
@@ -13,7 +14,10 @@ interface PlatformInterface
      *
      * @return ResultInterface
      */
-    public function attainAbstractResult($result);
+    public function attainAbstractResult($result)
+    {
+        return $result;
+    }
 
     /**
      * Set Platform Connection
@@ -22,12 +26,19 @@ interface PlatformInterface
      *
      * @return $this
      */
-    public function setConnection(ConnectionInterface $conn);
+    public function setConnection(ConnectionInterface $conn)
+    {
+        // TODO: Implement setConnection() method.
+    }
 
     /**
      * Get Connection Info
      *
      * @return mixed
      */
-    function getInfo();
+    function getInfo()
+    {
+        // TODO: Implement getInfo() method.
+    }
 }
+ 

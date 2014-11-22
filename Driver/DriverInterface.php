@@ -3,7 +3,6 @@ namespace Poirot\Database\Driver;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Platform\PlatformInterface;
-use Poirot\Database\Statement\StatementInterface;
 
 interface DriverInterface
 {
@@ -24,13 +23,6 @@ interface DriverInterface
     function exec($stm);
 
     /**
-     * Get Statement
-     *
-     * @return StatementInterface
-     */
-    function statement();
-
-    /**
      * Get Database Engine Platform
      *
      * @return PlatformInterface
@@ -38,9 +30,12 @@ interface DriverInterface
     function platform();
 
     /**
-     * Get Connection
+     * Set Connection
      *
-     * @return ConnectionInterface
+     * @param ConnectionInterface $connection Connection Instance
+     *
+     * @throws \Exception If Wont Support Connection Engine
+     * @return $this
      */
-    function connection();
+    function setConnection(ConnectionInterface $connection);
 }

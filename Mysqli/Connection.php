@@ -2,56 +2,19 @@
 namespace Poirot\Database\Mysqli;
 
 use Poirot\Collection\Entity;
-use Poirot\Database\Connection\ConnectionInterface;
+use Poirot\Database\Connection\AbstractConnection;
 
-class Connection implements ConnectionInterface
+class Connection extends AbstractConnection
 {
-    /**
-     * @var Entity
-     */
-    protected $config;
-
     /**
      * @var \mysqli
      */
-    protected $engine;
+    protected $mysqli;
 
     /**
      * @var \mysqli Initialized Config
      */
     protected $conn;
-
-    /**
-     * Construct
-     *
-     * @param Entity $config Connection Configuration
-     */
-    function __construct(Entity $config)
-    {
-        $this->setConfig($config);
-    }
-
-    /**
-     * Set Configuration Options
-     *
-     * @param Entity $config Config
-     *
-     * @return $this
-     */
-    function setConfig(Entity $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * Get Configuration Options
-     *
-     * @return Entity
-     */
-    function getConfig()
-    {
-        return $this->config;
-    }
 
     /**
      * Get Options Initialized Connection Resource
@@ -126,11 +89,11 @@ class Connection implements ConnectionInterface
      */
     function close()
     {
-        if ($this->engine instanceof \mysqli) {
-            $this->engine->close();
+        if ($this->mysqli instanceof \mysqli) {
+            $this->mysqli->close();
         }
 
-        unset($this->engine);
+        unset($this->mysqli);
     }
 
     /**
@@ -150,12 +113,12 @@ class Connection implements ConnectionInterface
      */
     function getEngine()
     {
-        if (!$this->engine instanceof \mysqli) {
-            $this->engine = new \mysqli();
-            $this->engine->init();
+        if (!$this->mysqli instanceof \mysqli) {
+            $this->mysqli = new \mysqli();
+            $this->mysqli->init();
         }
 
-        return $this->engine;
+        return $this->mysqli;
     }
 }
  
