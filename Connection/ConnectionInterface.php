@@ -10,13 +10,6 @@ use Poirot\Collection\Entity;
 interface ConnectionInterface
 {
     /**
-     * Construct
-     *
-     * @param Entity $config Connection Configuration
-     */
-    function __construct(Entity $config);
-
-    /**
      * Set Configuration Options
      *
      * @param Entity $config Config
