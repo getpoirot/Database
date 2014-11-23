@@ -45,7 +45,7 @@ class Driver extends AbstractDriver
             ->query($stm);
 
         if ($error = $this->connection->hasError())
-            $this->platform()->attainAbstractResult($error);
+            $res = $error;
 
         return $this->platform()->attainAbstractResult($res);
     }

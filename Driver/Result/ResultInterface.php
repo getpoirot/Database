@@ -1,5 +1,5 @@
 <?php
-namespace Poirot\Database\Driver;
+namespace Poirot\Database\Driver\Result;
 
 use Countable;
 use Iterator;

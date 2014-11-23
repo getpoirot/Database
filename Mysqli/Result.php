@@ -1,7 +1,7 @@
 <?php
 namespace Poirot\Database\Mysqli;
 
-use Poirot\Database\Driver\ResultInterface;
+use Poirot\Database\Driver\Result\ResultInterface;
 
 class Result implements
     ResultInterface

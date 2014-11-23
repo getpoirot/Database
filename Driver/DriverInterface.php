@@ -2,6 +2,7 @@
 namespace Poirot\Database\Driver;
 
 use Poirot\Database\Connection\ConnectionInterface;
+use Poirot\Database\Driver\Result\ResultInterface;
 use Poirot\Database\Platform\PlatformInterface;
 
 interface DriverInterface
