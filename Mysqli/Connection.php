@@ -23,11 +23,11 @@ class Connection extends AbstractConnection
      *
      * @param null|Entity $config Connection Configs
      *
-     * @return mixed
+     * @return \mysqli
      */
     function getConnection(Entity $config = null)
     {
-        $this->conn = $this->getOrigin();
+        $conn = $this->getOrigin();
 
         // localize
         $p = ($config) ?: $this->getConfig();
@@ -62,22 +62,26 @@ class Connection extends AbstractConnection
                 }
                 $option = constant($option);
 
-                $this->conn->options($option, $value);
+                $conn->options($option, $value);
             }
         }
 
-        $this->conn->real_connect($hostname, $username, $password, $database, $port, $socket);
+        if (!$this->isConnected()) {
+            $conn->real_connect($hostname, $username, $password, $database, $port, $socket);
 
-        if ($this->conn->connect_error) {
-            throw new \RuntimeException(
-                'Connection error',
-                null,
-                new \ErrorException($this->conn->connect_error, $this->conn->connect_errno)
-            );
-        }
+            if ($conn->connect_error) {
+                throw new \RuntimeException(
+                    'Connection error',
+                    null,
+                    new \ErrorException($conn->connect_error, $conn->connect_errno)
+                );
+            }
 
-        if ($p->has('charset')) {
-            $this->conn->set_charset($p->get('charset'));
+            if ($p->has('charset')) {
+                $conn->set_charset($p->get('charset'));
+            }
+
+            $this->conn = $conn;
         }
 
         return $this->conn;
