@@ -1,5 +1,5 @@
 <?php
-namespace Poirot\Database\Connection;
+namespace Poirot\Database\Driver\Feature;
 
 interface TransactionFeatureInterface
 {

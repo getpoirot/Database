@@ -36,6 +36,12 @@ class Driver extends AbstractDriver
      */
     function exec($stm)
     {
+        // Unbuffered
+        /*$this->connection->getConnection()
+            ->real_query($stm);
+        $res = $this->connection->getConnection()->use_result();*/
+
+        // Buffered
         $res = $this->connection->getConnection()
             ->query($stm);
 

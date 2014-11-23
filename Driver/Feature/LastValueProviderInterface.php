@@ -1,5 +1,5 @@
 <?php
-namespace Poirot\Database\Platform;
+namespace Poirot\Database\Driver\Feature;
 
 interface LastValueProviderInterface
 {

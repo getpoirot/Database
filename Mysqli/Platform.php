@@ -2,7 +2,6 @@
 namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Connection\ConnectionInterface;
-use Poirot\Database\Driver\ResultInterface;
 use Poirot\Database\Platform\PlatformInterface;
 
 class Platform implements PlatformInterface
@@ -12,7 +11,7 @@ class Platform implements PlatformInterface
      *
      * @param mixed $result Connection Engine(resource) Result
      *
-     * @return ResultInterface
+     * @return Result
      */
     public function attainAbstractResult($result)
     {

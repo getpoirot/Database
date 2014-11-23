@@ -176,6 +176,8 @@ class Result implements
      */
     public function count()
     {
+        // @TODO Get Rows For Unbuffered Results
+
         return $this->getOrigin()->num_rows;
     }
 }
