@@ -3,9 +3,15 @@ namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Platform\PlatformInterface;
+use Poirot\Database\Statement\StatementInterface;
 
 class Platform implements PlatformInterface
 {
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
     /**
      * @return mixed
      */
@@ -15,13 +21,41 @@ class Platform implements PlatformInterface
     }
 
     /**
+     * Get Driver Query From Statement
+     *
+     * @param StatementInterface $statement Statement
+     *
+     * @return mixed Usually String
+     */
+    public function prepareStatement($statement)
+    {
+        // convert statement to sql
+        // return sql as query string
+    }
+
+    /**
+     * Get Executable Query From Statement
+     * @link http://php.net/manual/en/mysqli.quickstart.prepared-statements.php
+     *
+     * @param StatementInterface $statement Statement
+     *
+     * @return mixed
+     */
+    public function prepareExecutableStatement($statement)
+    {
+        // convert statement to sql
+        // bind values
+        // return prepared execute statement
+    }
+
+    /**
      * Attain To Abstract Result From Specific Engine Result
      *
      * @param mixed $result Connection Engine(resource) Result
      *
      * @return Result
      */
-    public function attainAbstractResult($result)
+    public function prepareExecResult($result)
     {
         $return = new Result();
         $return->setOrigin($result);
@@ -30,14 +64,16 @@ class Platform implements PlatformInterface
     }
 
     /**
-     * Get Query Statement
+     * Set Platform Connection Origin
      *
-     * @param mixed $statement Statement
-     * @return mixed
+     * @param ConnectionInterface $conn Connection
+     *
+     * @return $this
      */
-    public function attainQueryFromStatement($statement)
+    public function setConnection(ConnectionInterface $conn)
     {
-        // TODO: Implement attainQueryFromStatement() method.
+        $this->connection = $conn;
+
+        return $this;
     }
 }
- 

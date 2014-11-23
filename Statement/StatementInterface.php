@@ -3,7 +3,7 @@ namespace Poirot\Database\Statement;
 
 use Zend\Db\Sql\ExpressionInterface;
 
-interface StatementInterface
+interface StatementInterface extends StatementEngineInterface
 {
     /**
      * Get Supported Platforms Name
@@ -22,12 +22,6 @@ interface StatementInterface
     function setStatement($stm);
 
     /**
-     * @param $stm
-     * @return mixed
-     */
-    function prepare($stm);
-
-    /**
      * Bind Expression To Statement
      *
      * @param ExpressionInterface $expr        Expression
@@ -38,9 +32,14 @@ interface StatementInterface
     function bind(ExpressionInterface $expr, $placeholder = null);
 
     /**
-     * Get Statement as String
+     * Set Statement Engine
      *
-     * @return string
+     * ! used by prepareStatement
+     *   by calling prepareStatement from engine
+     *
+     * @param StatementEngineInterface $ste
+     *
+     * @return mixed
      */
-    function toString();
+    function setEngine(StatementEngineInterface $ste);
 }

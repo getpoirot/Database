@@ -3,8 +3,10 @@ namespace Poirot\Database\Platform;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\Result\ResultInterface;
+use Poirot\Database\Statement\StatementEngineInterface;
+use Poirot\Database\Statement\StatementInterface;
 
-interface PlatformInterface
+interface PlatformInterface extends StatementEngineInterface
 {
     /**
      * @return mixed
@@ -21,19 +23,30 @@ interface PlatformInterface
     public function setConnection(ConnectionInterface $conn);
 
     /**
+     * Get Driver Query From Statement
+     *
+     * @param StatementInterface $statement Statement
+     *
+     * @return mixed
+     */
+    public function prepareStatement($statement);
+
+    /**
+     * Get Executable Query From Statement
+     * @link http://php.net/manual/en/mysqli.quickstart.prepared-statements.php
+     *
+     * @param StatementInterface $statement Statement
+     *
+     * @return mixed
+     */
+    public function prepareExecutableStatement($statement);
+
+    /**
      * Attain To Abstract Result From Specific Engine Result
      *
      * @param mixed $result Connection Engine(resource) Result
      *
      * @return ResultInterface
      */
-    public function attainAbstractResult($result);
-
-    /**
-     * Get Query Statement
-     *
-     * @param mixed $statement Statement
-     * @return mixed
-     */
-    public function attainQueryFromStatement($statement);
+    public function prepareExecResult($result);
 }

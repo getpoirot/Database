@@ -5,6 +5,7 @@ use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\AbstractDriver;
 use Poirot\Database\Driver\Exception;
 use Poirot\Database\Driver\Result\ResultInterface;
+use Poirot\Database\Statement\StatementInterface;
 
 class Driver extends AbstractDriver
 {
@@ -26,7 +27,7 @@ class Driver extends AbstractDriver
     /**
      * Execute Statement Directly To Resource
      *
-     * @param mixed $stm Statement
+     * @param mixed|StatementInterface $stm Statement
      *
      * @return ResultInterface
      */
@@ -34,20 +35,37 @@ class Driver extends AbstractDriver
     {
         $this->lastStatement = $stm;
 
+        if ($stm instanceof StatementInterface)
+            $res = $this->execStatement($stm);
+        else
+            $res = $this->execQuery($stm);
+
+        if ($error = $this->connection->hasError())
+            $res = $error;
+
+        return $this->platform()->prepareExecResult($res);
+    }
+
+    protected function execQuery($query)
+    {
         // Unbuffered
         /*
         $this->connection->getConnection()->real_query($stm);
         $res = $this->connection->getConnection()->use_result();
         */
 
-        // Buffered
-        $res = $this->connection->getConnection()
-            ->query($stm);
+        return $this->connection->getConnection()
+            ->query($query);
+    }
 
-        if ($error = $this->connection->hasError())
-            $res = $error;
+    protected function execStatement($statement)
+    {
+        $preparedStatement = $this->platform()
+            ->prepareExecutableStatement($statement);
 
-        return $this->platform()->attainAbstractResult($res);
+        $preparedStatement->execute();
+
+        return $preparedStatement->get_result();
     }
 
     /**
