@@ -7,13 +7,6 @@ use Poirot\Database\Platform\PlatformInterface;
 interface DriverInterface
 {
     /**
-     * Get Database(Schema) name from connection
-     *
-     * @return string
-     */
-    function getDbName();
-
-    /**
      * Execute Statement Directly To Resource
      *
      * @param mixed $stm Statement
@@ -21,6 +14,13 @@ interface DriverInterface
      * @return ResultInterface
      */
     function exec($stm);
+
+    /**
+     * Get Last Executed Statement
+     *
+     * @return mixed
+     */
+    function getLastStatement();
 
     /**
      * Get Database Engine Platform
