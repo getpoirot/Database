@@ -2,6 +2,7 @@
 namespace Poirot\Database\Connection;
 
 use Poirot\Collection\Entity;
+use Poirot\Database\Connection\Exception\ConnectionException;
 
 /**
  * Interface ConnectionInterface
@@ -32,9 +33,17 @@ interface ConnectionInterface
      *
      * @param null|Entity $config Connection Configs
      *
+     * @throws \Exception On Unsuccessful Connection
      * @return mixed
      */
     function getConnection(Entity $config = null);
+
+    /**
+     * Get Last Error From Connection
+     *
+     * @return false|ConnectionException|\Exception
+     */
+    function hasError();
 
     /**
      * Close Connection

@@ -3,6 +3,7 @@ namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\AbstractDriver;
+use Poirot\Database\Driver\Exception;
 use Poirot\Database\Driver\ResultInterface;
 
 class Driver extends AbstractDriver
@@ -18,14 +19,9 @@ class Driver extends AbstractDriver
     protected $platform;
 
     /**
-     * Get Database(Schema) name from connection
-     *
-     * @return string
+     * @var string Query Statement
      */
-    function getDbName()
-    {
-        // TODO: Implement getDbName() method.
-    }
+    protected $lastStatement;
 
     /**
      * Execute Statement Directly To Resource
@@ -36,16 +32,32 @@ class Driver extends AbstractDriver
      */
     function exec($stm)
     {
+        $this->lastStatement = $stm;
+
         // Unbuffered
-        /*$this->connection->getConnection()
-            ->real_query($stm);
-        $res = $this->connection->getConnection()->use_result();*/
+        /*
+        $this->connection->getConnection()->real_query($stm);
+        $res = $this->connection->getConnection()->use_result();
+        */
 
         // Buffered
         $res = $this->connection->getConnection()
             ->query($stm);
 
+        if ($error = $this->connection->hasError())
+            $this->platform()->attainAbstractResult($error);
+
         return $this->platform()->attainAbstractResult($res);
+    }
+
+    /**
+     * Get Last Executed Statement
+     *
+     * @return mixed
+     */
+    function getLastStatement()
+    {
+        return $this->lastStatement;
     }
 
     /**

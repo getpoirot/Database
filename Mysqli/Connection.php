@@ -3,6 +3,7 @@ namespace Poirot\Database\Mysqli;
 
 use Poirot\Collection\Entity;
 use Poirot\Database\Connection\AbstractConnection;
+use Poirot\Database\Connection\Exception\ConnectionException;
 
 class Connection extends AbstractConnection
 {
@@ -23,6 +24,7 @@ class Connection extends AbstractConnection
      *
      * @param null|Entity $config Connection Configs
      *
+     * @throws \Exception On Unsuccessful Connection
      * @return \mysqli
      */
     function getConnection(Entity $config = null)
@@ -67,24 +69,35 @@ class Connection extends AbstractConnection
         }
 
         if (!$this->isConnected()) {
-            $conn->real_connect($hostname, $username, $password, $database, $port, $socket);
-
-            if ($conn->connect_error) {
-                throw new \RuntimeException(
-                    'Connection error',
-                    null,
-                    new \ErrorException($conn->connect_error, $conn->connect_errno)
-                );
-            }
-
-            if ($p->has('charset')) {
-                $conn->set_charset($p->get('charset'));
-            }
-
             $this->conn = $conn;
+            $this->conn->real_connect($hostname, $username, $password, $database, $port, $socket);
+
+            if ($error = $this->hasError())
+                throw $error;
+
+            if ($p->has('charset'))
+                $this->conn->set_charset($p->get('charset'));
         }
 
         return $this->conn;
+    }
+
+    /**
+     * Get Last Error From Connection
+     *
+     * @return false|ConnectionException|\Exception
+     */
+    function hasError()
+    {
+        $exception = false;
+
+        $conn = $this->getConnection();
+        if ($conn->connect_errno)
+            $exception = new ConnectionException($conn->connect_error, $conn->connect_errno);
+        elseif ($conn->errno)
+            $exception = new \Exception($conn->connect_error, $conn->connect_errno);
+
+        return $exception;
     }
 
     /**
