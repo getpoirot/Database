@@ -4,7 +4,7 @@ namespace Poirot\Database\Mysqli;
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\AbstractDriver;
 use Poirot\Database\Driver\Exception;
-use Poirot\Database\Driver\ResultInterface;
+use Poirot\Database\Driver\Result\ResultInterface;
 
 class Driver extends AbstractDriver
 {

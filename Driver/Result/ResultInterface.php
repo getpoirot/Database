@@ -1,10 +1,9 @@
 <?php
 namespace Poirot\Database\Driver\Result;
 
-use Countable;
-use Iterator;
-
-interface ResultInterface extends Countable, Iterator
+interface ResultInterface extends
+    \IteratorAggregate, // Result Is Irritable if Count > 0
+    \Countable
 {
     /**
      * Set Query Result Origin
@@ -22,4 +21,11 @@ interface ResultInterface extends Countable, Iterator
      * @return mixed
      */
     public function getOrigin();
+
+    /**
+     * Is Result Consuming Fault
+     *
+     * @return boolean
+     */
+    public function isFault();
 }
