@@ -30,18 +30,6 @@ class Platform implements PlatformInterface
     }
 
     /**
-     * Set Platform Connection
-     *
-     * @param ConnectionInterface $conn Connection
-     *
-     * @return $this
-     */
-    public function setConnection(ConnectionInterface $conn)
-    {
-        // TODO: Implement setConnection() method.
-    }
-
-    /**
      * Get Query Statement
      *
      * @param mixed $statement Statement

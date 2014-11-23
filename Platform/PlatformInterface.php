@@ -1,6 +1,7 @@
 <?php
 namespace Poirot\Database\Platform;
 
+use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\Result\ResultInterface;
 
 interface PlatformInterface
@@ -9,6 +10,15 @@ interface PlatformInterface
      * @return mixed
      */
     public function getSupportedPlatform();
+
+    /**
+     * Set Platform Connection
+     *
+     * @param ConnectionInterface $conn Connection
+     *
+     * @return $this
+     */
+    public function setConnection(ConnectionInterface $conn);
 
     /**
      * Attain To Abstract Result From Specific Engine Result
@@ -27,4 +37,3 @@ interface PlatformInterface
      */
     public function attainQueryFromStatement($statement);
 }
-
