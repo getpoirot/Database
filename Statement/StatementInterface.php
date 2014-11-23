@@ -3,6 +3,17 @@ namespace Poirot\Database\Statement;
 
 use Zend\Db\Sql\ExpressionInterface;
 
+/**
+ * Interface StatementInterface
+ * @package Poirot\Database\Statement
+ *
+ * Statements are methods that get Expr
+ * each Expr can nest with AND | OR
+ *
+ * Methods:
+ * - Call    to invoke procedural from server
+ * - Select  ...
+ */
 interface StatementInterface extends StatementEngineInterface
 {
     /**
@@ -11,15 +22,6 @@ interface StatementInterface extends StatementEngineInterface
      * @return array
      */
     function getSupportedPlatform();
-
-    /**
-     * Prepare new Statement
-     *
-     * @param mixed $stm Statement
-     *
-     * @return $this
-     */
-    function setStatement($stm);
 
     /**
      * Bind Expression To Statement
@@ -39,7 +41,7 @@ interface StatementInterface extends StatementEngineInterface
      *
      * @param StatementEngineInterface $ste
      *
-     * @return mixed
+     * @return $this
      */
     function setEngine(StatementEngineInterface $ste);
 }

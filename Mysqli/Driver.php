@@ -5,6 +5,7 @@ use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Driver\AbstractDriver;
 use Poirot\Database\Driver\Exception;
 use Poirot\Database\Driver\Result\ResultInterface;
+use Poirot\Database\Statement\StatementExecutableInterface;
 use Poirot\Database\Statement\StatementInterface;
 
 class Driver extends AbstractDriver
@@ -35,10 +36,15 @@ class Driver extends AbstractDriver
     {
         $this->lastStatement = $stm;
 
+        $res = false;
         if ($stm instanceof StatementInterface)
-            $res = $this->execStatement($stm);
-        else
-            $res = $this->execQuery($stm);
+            if ($stm instanceof StatementExecutableInterface
+                && $this->platform() instanceof StatementExecutableInterface)
+                $res = $this->execStatement($stm);
+            else
+                $stm = $this->platform()->prepareStatement($stm);
+
+        $res = ($res) ? $res : $this->execQuery($stm);
 
         if ($error = $this->connection->hasError())
             $res = $error;

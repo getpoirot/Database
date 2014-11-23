@@ -3,9 +3,12 @@ namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Connection\ConnectionInterface;
 use Poirot\Database\Platform\PlatformInterface;
+use Poirot\Database\Statement\StatementExecutableInterface;
 use Poirot\Database\Statement\StatementInterface;
 
-class Platform implements PlatformInterface
+class Platform implements
+    PlatformInterface,
+    StatementExecutableInterface
 {
     /**
      * @var Connection
