@@ -6,6 +6,28 @@ use Zend\Db\Sql\ExpressionInterface;
 interface StatementInterface
 {
     /**
+     * Get Supported Platforms Name
+     *
+     * @return array
+     */
+    function getSupportedPlatform();
+
+    /**
+     * Prepare new Statement
+     *
+     * @param mixed $stm Statement
+     *
+     * @return $this
+     */
+    function setStatement($stm);
+
+    /**
+     * @param $stm
+     * @return mixed
+     */
+    function prepare($stm);
+
+    /**
      * Bind Expression To Statement
      *
      * @param ExpressionInterface $expr        Expression
@@ -14,15 +36,6 @@ interface StatementInterface
      * @return $this
      */
     function bind(ExpressionInterface $expr, $placeholder = null);
-
-    /**
-     * Prepare new Statement
-     *
-     * @param string $stm Statement
-     *
-     * @return StatementInterface
-     */
-    function prepare($stm);
 
     /**
      * Get Statement as String

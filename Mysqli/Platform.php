@@ -7,6 +7,14 @@ use Poirot\Database\Platform\PlatformInterface;
 class Platform implements PlatformInterface
 {
     /**
+     * @return mixed
+     */
+    public function getSupportedPlatform()
+    {
+        return array('mysqli', 'mysql');
+    }
+
+    /**
      * Attain To Abstract Result From Specific Engine Result
      *
      * @param mixed $result Connection Engine(resource) Result
@@ -34,13 +42,14 @@ class Platform implements PlatformInterface
     }
 
     /**
-     * Get Connection Info
+     * Get Query Statement
      *
+     * @param mixed $statement Statement
      * @return mixed
      */
-    function getInfo()
+    public function attainQueryFromStatement($statement)
     {
-        // TODO: Implement getInfo() method.
+        // TODO: Implement attainQueryFromStatement() method.
     }
 }
  
