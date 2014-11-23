@@ -3,12 +3,28 @@ namespace Poirot\Database\Mysqli;
 
 use Poirot\Database\Driver\ResultInterface;
 
-class Result implements ResultInterface
+class Result implements
+    ResultInterface
 {
     /**
      * @var \mysqli_result
      */
     protected $resultOrigin;
+
+    /**
+     * @var int Iteration Position
+     */
+    protected $position = 0;
+
+    /**
+     * @var boolean Set From First Call To isBuffer()
+     */
+    protected $isBuffered = null;
+
+    /**
+     * @var array Using within getCurrentData()
+     */
+    protected $currData;
 
     /**
      * Set Query Result Origin
@@ -40,6 +56,30 @@ class Result implements ResultInterface
     }
 
     /**
+     * Is Buffered Mysqli Result?
+     *
+     * Unbuffered
+     * If client memory is a short resource and freeing server resources
+     * as early as possible to keep server load low is not needed,
+     * unbuffered results can be used.
+     * Scrolling through unbuffered results is not possible
+     * before all rows have been read.
+     *
+     * @return bool
+     */
+    public function isBuffered()
+    {
+        ($this->isBuffered !== null) ?:
+            $this->isBuffered =
+            !(
+                $this->getOrigin()->field_count > 0
+                && $this->getOrigin()->num_rows == 0
+            );
+
+        return $this->isBuffered;
+    }
+
+    /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the current element
      * @link http://php.net/manual/en/iterator.current.php
@@ -47,29 +87,15 @@ class Result implements ResultInterface
      */
     public function current()
     {
-        // TODO: Implement current() method.
-    }
+        $this->getOrigin()->data_seek($this->position);
+        if ($this->currData)
+            $return = $this->currData;
+        else
+            $return = $this->getCurrentData();
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Move forward to next element
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
-     */
-    public function next()
-    {
-        // TODO: Implement next() method.
-    }
+        $this->currData = null;
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Return the key of the current element
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return mixed scalar on success, or null on failure.
-     */
-    public function key()
-    {
-        // TODO: Implement key() method.
+        return $return;
     }
 
     /**
@@ -81,7 +107,50 @@ class Result implements ResultInterface
      */
     public function valid()
     {
-        // TODO: Implement valid() method.
+        if (!$this->isBuffered())
+            $return = $this->getCurrentData();
+        else
+            $return = $this->position < ($this->count() - 1 );
+
+        return $return;
+    }
+
+    /**
+     * Get Current Data
+     *
+     * - it's implemented for Unbuffered results,
+     *   so we don't have num_rows exactly
+     *   and check valid() with getting data
+     *
+     * @return array
+     */
+    protected function getCurrentData()
+    {
+        $this->currData = $this->getOrigin()->fetch_assoc();
+
+        return $this->currData;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Move forward to next element
+     * @link http://php.net/manual/en/iterator.next.php
+     * @return void Any returned value is ignored.
+     */
+    public function next()
+    {
+        $this->position++;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Return the key of the current element
+     * @link http://php.net/manual/en/iterator.key.php
+     * @return mixed scalar on success, or null on failure.
+     */
+    public function key()
+    {
+        return $this->position;
     }
 
     /**
@@ -92,7 +161,8 @@ class Result implements ResultInterface
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
+        $this->position = 0;
+        $this->getOrigin()->data_seek($this->position);
     }
 
     /**
@@ -106,7 +176,6 @@ class Result implements ResultInterface
      */
     public function count()
     {
-        // TODO: Implement count() method.
+        return $this->getOrigin()->num_rows;
     }
 }
- 
